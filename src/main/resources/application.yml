@@ -1,19 +1,22 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/yogiyo?serverTimezone=UTC&characterEncoding=UTF-8
+    url: jdbc:mysql://localhost:3306/yogiyo_toy?serverTimezone=UTC&characterEncoding=UTF-8
     username: root
     password: 5ab5c87a
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
     properties:
       hibernate:
     # show_sql: true
         format_sql: true
         dialect: org.hibernate.dialect.MySQL5Dialect
 
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
 logging.level:
   org.hibernate.SQL: debug
 # org.hibernate.type: trace

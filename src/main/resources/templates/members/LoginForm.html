@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header">
+    <title>Hello</title>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<div th:replace="fragments/bodyHeader :: bodyHeader"/>
+<h1>저기요</h1>
+<div id = "box">
+    <table align=center>
+        <form action=Login_judge.jsp method=POST>
+            <tr>
+                <td>아이디</td>
+                <td><input type=text name=ID placeholder=ID></td>
+            </tr>
+            <tr>
+                <td>비밀번호</td>
+                <td><input type=password name=PW placeholder=********></td>
+            </tr>
+
+            <tr>
+                <td><input type=submit name=LOGIN value=로그인></td>
+        </form>
+        <td>
+            <button type="button" onclick="location.href='/members/new' ">회원가입</button>
+        </td>
+    </table>
+</div>
+<div th:replace="fragments/footer :: footer"/>
+</body>
+</html>

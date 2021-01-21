@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header" />
+<body>
+<div class="container">
+    <div th:replace="fragments/bodyHeader :: bodyHeader" />
+    <h1>회원목록</h1>
+    <div id = "box">
+        <table align = center class="table table-striped">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>이메일</th>
+                <th>닉네임</th>
+                <th>전화번호</th>
+                <th>등급</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="memberDto : ${memberDtos}">
+                <td th:text="${memberDto.id}"></td>
+                <td th:text="${memberDto.email}"></td>
+                <td th:text="${memberDto.nickname}"></td>
+                <td th:text="${memberDto.phone}"></td>
+                <td th:text="${memberDto.memberType}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:replace="fragments/footer :: footer" />
+</div> <!-- /container -->
+</body>
+</html>

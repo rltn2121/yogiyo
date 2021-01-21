@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header">
+    <title>Hello</title>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<div th:replace="fragments/bodyHeader :: bodyHeader"/>
+<h1>저기요</h1>
+<div id="box">
+    <table align=right>
+        <tr>
+            <td>
+                <a href="/login">로그인</a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <a href="/members">회원 목록</a>
+            </td>
+        </tr>
+    </table>
+
+    <table align=center class="table table-striped">
+        <tr>
+            <td>
+                <a href="/restaurants">전체 보기</a>
+            </td>
+        </tr>
+        <tr th:each="categoryDtos : ${categoryDtos}">
+            <td>
+                <a th:href="'/restaurants/' + ${categoryDtos.category}"
+                   th:text="${categoryDtos.category}"></a>
+            </td>
+        </tr>
+    </table>
+</div>
+<div th:replace="fragments/footer :: footer"/>
+</body>
+</html>
