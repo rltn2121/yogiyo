@@ -4,19 +4,27 @@
 <body>
 <div class="container">
     <div th:replace="fragments/bodyHeader :: bodyHeader" />
-    <h1>회원목록</h1>
+    <h1 th:text="${category}"></h1>
     <div id = "box">
         <table align = center class="table table-striped">
             <thead>
             <tr>
                 <th>#</th>
                 <th>이름</th>
+                <th>평점</th>
+                <th>리뷰개수</th>
+                <th>최소배달금액</th>
+                <th>배달할인</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="restaurantDto : ${restaurantDtos}">
-                <td th:text="${restaurantDto.id}"></td>
-                <td th:text="${restaurantDto.name}"></td>
+            <tr th:each="restaurantPreviewDto : ${restaurantPreviewDtos}">
+                <td th:text="${restaurantPreviewDto.id}"></td>
+                <td th:text="${restaurantPreviewDto.name}"></td>
+                <td th:text="${restaurantPreviewDto.avgScore}"></td>
+                <td th:text="${restaurantPreviewDto.reviewCount}"></td>
+                <td th:text="${restaurantPreviewDto.minDeliverablePrice}"></td>
+                <td th:text="${restaurantPreviewDto.deliveryPrice}"></td>
             </tr>
             </tbody>
         </table>

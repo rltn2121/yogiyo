@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import practice.yogiyo.entity.BaseTimeEntity;
 import practice.yogiyo.entity.Order.Order;
+import practice.yogiyo.entity.Restaurant.Restaurant;
 
 import javax.persistence.*;
 
@@ -25,4 +26,12 @@ public class Review extends BaseTimeEntity {
     public Integer taste;
     public Integer quantity;
     public Integer delivery;
+
+    public Double avgScore;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "restaurant_id")
+    public Restaurant restaurant;
+
+
 }

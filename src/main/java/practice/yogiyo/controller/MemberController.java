@@ -31,7 +31,7 @@ public class MemberController {
     public String home(Model model) {
         List<Category> categories = categoryService.findCategories();
         List<CategoryDto> categoryDtos = categories.stream()
-                .map(c -> new CategoryDto(c.getId(), c.getRestaurantType()))
+                .map(c -> new CategoryDto(c.getId(), categoryService.toKoeran(c.getRestaurantType())))
                 .collect(Collectors.toList());
 
         model.addAttribute("categoryDtos", categoryDtos);
@@ -41,7 +41,6 @@ public class MemberController {
     // 필요한 정보만 가져오기 위해서 Member 대신 MemberForm 사용
     @GetMapping("/members/new")
     public String createForm(Model model) {
-
         model.addAttribute("memberForm", new MemberForm());
         return "members/createMemberForm";
     }

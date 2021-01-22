@@ -7,13 +7,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import practice.yogiyo.dto.QRestaurantDto;
 import practice.yogiyo.dto.RestaurantDto;
+import practice.yogiyo.dto.RestaurantPreviewDto;
 import practice.yogiyo.entity.Restaurant.Category;
 import practice.yogiyo.entity.Restaurant.QRestaurant;
 import practice.yogiyo.entity.Restaurant.QRestaurantCategory;
+import practice.yogiyo.entity.Restaurant.Restaurant;
+import practice.yogiyo.repository.RestaurantQueryRepository;
 import practice.yogiyo.repository.RestaurantRepository;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static practice.yogiyo.entity.Restaurant.QRestaurant.restaurant;
 import static practice.yogiyo.entity.Restaurant.QRestaurantCategory.restaurantCategory;
@@ -23,29 +27,27 @@ import static practice.yogiyo.entity.Restaurant.QRestaurantCategory.restaurantCa
 @RequiredArgsConstructor
 public class RestaurantService {
     private final RestaurantRepository restaurantRepository;
+    private final RestaurantQueryRepository restaurantQueryRepository;
     private final EntityManager entityManager;
     private final JPAQueryFactory queryFactory;
+    private final CategoryService categoryService;
 
 
-    /**
-     * select *
-     * from RestaurantCategory
-     * left join Restaurant
-     *
-     *
-     */
-    public List<RestaurantDto> findByCategory(Category category) {
-        List<RestaurantDto> result = queryFactory
-                .select(new QRestaurantDto(restaurant.id.as("restaurantId"), restaurant.name))
-                .from(restaurantCategory)
-                .leftJoin(restaurantCategory.restaurant, restaurant)
-                .where(
-                        categoryEq(category)
-                ).fetch();
-        return result;
+    public List<RestaurantDto> findAll() {
+        List<Restaurant> findRestaurant = restaurantRepository.findAll();
+        List<RestaurantDto> restaurantDtos = findRestaurant.stream()
+                .map(r -> new RestaurantDto(r.getId(), r.getName()))
+                .collect(Collectors.toList());
+        return restaurantDtos;
     }
-    private BooleanExpression categoryEq(Category category){
-        return category != null ?
-                restaurantCategory.category.eq(category) : null;
+
+    public List<RestaurantPreviewDto> findByCategoryName(String categoryName) {
+        String keyword = "";
+        if(categoryName.equals("전체보기"))
+            keyword = null;
+        else
+            keyword= categoryService.toEnglish(categoryName);
+        return restaurantQueryRepository.getRestaurantPreview(keyword);
     }
+
 }

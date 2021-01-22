@@ -3,6 +3,7 @@ package practice.yogiyo.entity.Menu;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import practice.yogiyo.entity.BaseTimeEntity;
 import practice.yogiyo.entity.EmbeddedType.Url;
 
@@ -11,6 +12,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString
 public class Menu extends BaseTimeEntity {
     @Id @GeneratedValue
     @Column(name = "menu_id")
