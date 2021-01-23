@@ -7,12 +7,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import practice.yogiyo.dto.QRestaurantPreviewDto;
 import practice.yogiyo.dto.RestaurantPreviewDto;
+import practice.yogiyo.entity.Menu.Menu;
 import practice.yogiyo.entity.Restaurant.*;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 
 import static org.springframework.util.StringUtils.hasText;
+import static practice.yogiyo.entity.Menu.QMenu.menu;
+import static practice.yogiyo.entity.Menu.QMenuCategory.menuCategory;
 import static practice.yogiyo.entity.Restaurant.QCategory.*;
 import static practice.yogiyo.entity.Restaurant.QRestaurant.*;
 import static practice.yogiyo.entity.Restaurant.QRestaurantCategory.*;
@@ -42,6 +45,23 @@ public class RestaurantQueryRepository {
                 .fetch();
     }
 
+
+    public List<Menu> findMenuByRestaurantId(Long restaurantId) {
+        return queryFactory
+                .selectFrom(menu)
+                .join(menu.menuCategory, menuCategory).fetchJoin()  // N+1문제 -> fetch join()
+                .where(
+                        menuCategory.in(
+                                JPAExpressions
+                                        .selectFrom(menuCategory)
+                                        .join(menuCategory.restaurant, restaurant)
+                                        .where(restaurant.id.eq(restaurantId))
+                        )
+                ).fetch();
+    }
+    /**
+     * PRIVATE
+     */
     private BooleanExpression restaurantIn(String categoryName) {
         return restaurant.in(
                 // 특정 카테고리에 해당하는 식당 정보
@@ -54,6 +74,7 @@ public class RestaurantQueryRepository {
                         )
         );
     }
+
 
 
     private BooleanExpression categoryEq(String categoryName) {

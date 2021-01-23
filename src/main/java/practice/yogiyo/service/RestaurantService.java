@@ -1,26 +1,21 @@
 package practice.yogiyo.service;
 
-import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import practice.yogiyo.dto.QRestaurantDto;
+import practice.yogiyo.dto.MenuCategoryDto;
 import practice.yogiyo.dto.RestaurantDto;
 import practice.yogiyo.dto.RestaurantPreviewDto;
-import practice.yogiyo.entity.Restaurant.Category;
-import practice.yogiyo.entity.Restaurant.QRestaurant;
-import practice.yogiyo.entity.Restaurant.QRestaurantCategory;
+import practice.yogiyo.entity.Menu.Menu;
 import practice.yogiyo.entity.Restaurant.Restaurant;
 import practice.yogiyo.repository.RestaurantQueryRepository;
 import practice.yogiyo.repository.RestaurantRepository;
 
 import javax.persistence.EntityManager;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static practice.yogiyo.entity.Restaurant.QRestaurant.restaurant;
-import static practice.yogiyo.entity.Restaurant.QRestaurantCategory.restaurantCategory;
 
 @Service
 @Transactional(readOnly = true)
@@ -50,4 +45,23 @@ public class RestaurantService {
         return restaurantQueryRepository.getRestaurantPreview(keyword);
     }
 
+
+    public List<MenuCategoryDto> getMenus(Long restaurantId) {
+        List<Menu> menuList = restaurantQueryRepository.findMenuByRestaurantId(restaurantId);
+        List<MenuCategoryDto> menuCategoryDtos = new ArrayList<>();
+        String lastCategory="";
+        int idx = -1;
+        for (Menu menu : menuList) {
+            String currentCategory =menu.getMenuCategory().getName();
+            // 마지막 카테고리와 현재 카테고리가 다르면
+            if(!lastCategory.equals(currentCategory)){
+                // 카테고리 갱신하고 새 객체 생성
+                lastCategory = currentCategory;
+                menuCategoryDtos.add(new MenuCategoryDto(lastCategory));
+                idx++;
+            }
+            menuCategoryDtos.get(idx).addMenus(menu);
+        }
+        return menuCategoryDtos;
+    }
 }

@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+import practice.yogiyo.dto.MenuCategoryDto;
+import practice.yogiyo.dto.QMenuDto;
 import practice.yogiyo.dto.RestaurantDto;
 import practice.yogiyo.entity.Menu.Menu;
 import practice.yogiyo.entity.Menu.MenuCategory;
@@ -50,27 +52,29 @@ class RestaurantServiceTest {
         }
     }
     @Test
-    public void 메뉴가져오기() throws Exception{
+    public void 메뉴가져오기() throws Exception {
         // given
-        List<Menu> fetch = queryFactory
-                .selectFrom(menu)
-                .join(menu.menuCategory, menuCategory)
-
-                .where(
-                        menuCategory.in(
-                                JPAExpressions
-                                        .selectFrom(menuCategory)
-                                        .join(menuCategory.restaurant, restaurant)
-                                        .where(restaurant.id.eq(1L))
-                        )
-                ).fetch();
+        List<Menu> result = restaurantQueryRepository.findMenuByRestaurantId(1L);
         // when
-        for (Menu fetch1 : fetch) {
+        for (Menu fetch1 : result) {
             System.out.println("fetch1.toString() = " + fetch1.toString());
         }
+    }
+
+    @Test
+    public void 메뉴변환() throws Exception{
+        // given
+        List<MenuCategoryDto> menus = restaurantService.getMenus(1L);
+        for (MenuCategoryDto menuCategoryDto : menus) {
+            System.out.println("menuCategoryDto.getName() = " + menuCategoryDto.getName());
+            for (Menu menu : menuCategoryDto.getMenus()) {
+                System.out.println("menu.getName() = " + menu.getName());
+                System.out.println("menu.getPrice() = " + menu.getPrice());
+            }
+        }
+        // when
+        
         // then
         
-    }
-    
-
+    } 
 }
