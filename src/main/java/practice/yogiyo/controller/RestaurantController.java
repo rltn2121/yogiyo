@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import practice.yogiyo.dto.MenuCategoryDto;
+import practice.yogiyo.dto.OptionCategoryDto;
 import practice.yogiyo.dto.RestaurantDto;
 import practice.yogiyo.dto.RestaurantPreviewDto;
 import practice.yogiyo.service.CategoryService;
@@ -39,9 +40,13 @@ public class RestaurantController {
     public String getRestaurantInfo(@PathVariable("restaurantId") Long restaurantId, Model model) {
         List<MenuCategoryDto> menuCategoryDtoList = restaurantService.getMenus(restaurantId);
         model.addAttribute("menuCategoryDtoList", menuCategoryDtoList);
-        menuCategoryDtoList.size();
-        System.out.println(menuCategoryDtoList.get(0).getMenus().get(0).getName());
-
         return "/restaurants/menuList";
+    }
+
+    @GetMapping("/menu/{menuId}")
+    public String getMenuInfo(@PathVariable("menuId") Long menuId, Model model) {
+        List<OptionCategoryDto> optionCategoryDtoList = restaurantService.getOptions(menuId);
+        model.addAttribute("optionCategoryDtoList", optionCategoryDtoList);
+        return "/menus/optionList"        ;
     }
 }

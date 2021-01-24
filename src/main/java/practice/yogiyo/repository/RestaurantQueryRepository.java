@@ -8,6 +8,9 @@ import org.springframework.stereotype.Repository;
 import practice.yogiyo.dto.QRestaurantPreviewDto;
 import practice.yogiyo.dto.RestaurantPreviewDto;
 import practice.yogiyo.entity.Menu.Menu;
+import practice.yogiyo.entity.Menu.Option;
+import practice.yogiyo.entity.Menu.QOption;
+import practice.yogiyo.entity.Menu.QOptionCategory;
 import practice.yogiyo.entity.Restaurant.*;
 
 import javax.persistence.EntityManager;
@@ -16,6 +19,8 @@ import java.util.List;
 import static org.springframework.util.StringUtils.hasText;
 import static practice.yogiyo.entity.Menu.QMenu.menu;
 import static practice.yogiyo.entity.Menu.QMenuCategory.menuCategory;
+import static practice.yogiyo.entity.Menu.QOption.option;
+import static practice.yogiyo.entity.Menu.QOptionCategory.optionCategory;
 import static practice.yogiyo.entity.Restaurant.QCategory.*;
 import static practice.yogiyo.entity.Restaurant.QRestaurant.*;
 import static practice.yogiyo.entity.Restaurant.QRestaurantCategory.*;
@@ -45,7 +50,9 @@ public class RestaurantQueryRepository {
                 .fetch();
     }
 
-
+    /**
+     * 특정 식당의 메뉴 카테고리별 메뉴 조회
+     */
     public List<Menu> findMenuByRestaurantId(Long restaurantId) {
         return queryFactory
                 .selectFrom(menu)
@@ -59,6 +66,25 @@ public class RestaurantQueryRepository {
                         )
                 ).fetch();
     }
+
+    /**
+     * 특정 메뉴의 옵션 카테고리별 옵션 조회
+     */
+    public List<Option> findOptionByMenuId(Long menuId) {
+        return queryFactory
+                .selectFrom(option)
+                .join(option.optionCategory, optionCategory).fetchJoin()  // N+1문제 -> fetch join()
+                .where(
+                        optionCategory.in(
+                                JPAExpressions
+                                        .selectFrom(optionCategory)
+                                        .join(optionCategory.menu, menu)
+                                        .where(menu.id.eq(menuId))
+                        )
+                ).fetch();
+    }
+
+
     /**
      * PRIVATE
      */

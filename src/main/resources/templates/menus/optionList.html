@@ -4,7 +4,7 @@
 <body>
 <div class="container">
     <div th:replace="fragments/bodyHeader :: bodyHeader"/>
-    <h1>메뉴</h1>
+    <h1>옵션</h1>
     <div id="box">
         <table align=center class="table table-striped">
             <thead>
@@ -14,18 +14,18 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="menuCategoryDto : ${menuCategoryDtoList}">
-                <td th:text="${menuCategoryDto.name}"></td>
-               <!-- <td th:text="${menuCategoryDto.menus}"></td>-->
+            <tr th:each="optionCategoryDto : ${optionCategoryDtoList}">
+                <td th:text="${optionCategoryDto.name}"></td>
+                <!-- <td th:text="${menuCategoryDto.menus}"></td>-->
                 <td>
                     <table>
-                        <tr th:each="menu : ${menuCategoryDto.menus}">
+                        <tr th:each="option : ${optionCategoryDto.options}">
                             <td>
-                                <a th:href="'/menu/' + ${menu.id}"
-                                   th:text="${menu.id}"></a>
+                                <a th:href="'/menu/' + ${option.id}"
+                                   th:text="${option.id}"></a>
                             </td>
-                            <td th:text="${menu.name}"></td>
-                            <td th:text="${menu.price}"></td>
+                            <td th:text="${option.name}"></td>
+                            <td th:text="${option.price}"></td>
                         </tr>
                     </table>
                 </td>

@@ -3,12 +3,14 @@ package practice.yogiyo.entity.Menu;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString
 @Table(name = "options")
 public class Option {
     @Id

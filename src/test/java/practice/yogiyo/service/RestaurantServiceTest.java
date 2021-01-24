@@ -7,12 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import practice.yogiyo.dto.MenuCategoryDto;
+import practice.yogiyo.dto.OptionCategoryDto;
 import practice.yogiyo.dto.QMenuDto;
 import practice.yogiyo.dto.RestaurantDto;
-import practice.yogiyo.entity.Menu.Menu;
-import practice.yogiyo.entity.Menu.MenuCategory;
-import practice.yogiyo.entity.Menu.QMenu;
-import practice.yogiyo.entity.Menu.QMenuCategory;
+import practice.yogiyo.entity.Menu.*;
 import practice.yogiyo.entity.Restaurant.Category;
 import practice.yogiyo.entity.Restaurant.QRestaurant;
 import practice.yogiyo.entity.Restaurant.RestaurantType;
@@ -62,6 +60,18 @@ class RestaurantServiceTest {
     }
 
     @Test
+    public void 옵션가져오기() throws Exception{
+        // given
+        List<Option> result = restaurantQueryRepository.findOptionByMenuId(1L);
+        for (Option option : result) {
+            System.out.println("option.toString() = " + option.toString());
+        }
+        // when
+
+        // then
+        
+    }
+    @Test
     public void 메뉴변환() throws Exception{
         // given
         List<MenuCategoryDto> menus = restaurantService.getMenus(1L);
@@ -72,9 +82,17 @@ class RestaurantServiceTest {
                 System.out.println("menu.getPrice() = " + menu.getPrice());
             }
         }
-        // when
-        
-        // then
-        
+    }     
+    @Test
+    public void 옵션변환() throws Exception{
+        // given
+        List<OptionCategoryDto> options = restaurantService.getOptions(1L);
+        for (OptionCategoryDto optionCategoryDto : options) {
+            System.out.println("optionCategoryDto.getName() = " + optionCategoryDto.getName());
+            for (Option option : optionCategoryDto.getOptions()) {
+                System.out.println("option.getName() = " + option.getName());
+                System.out.println("option.getPrice() = " + option.getPrice());
+            }
+        }
     } 
 }
