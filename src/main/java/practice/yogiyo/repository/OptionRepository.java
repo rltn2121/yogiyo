@@ -2,7 +2,7 @@ package practice.yogiyo.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import practice.yogiyo.entity.Member.Member;
-import practice.yogiyo.entity.Menu.Menu;
+import practice.yogiyo.entity.Menu.Option;
 
-public interface MenuRepository extends JpaRepository<Menu, Long> {
+public interface OptionRepository extends JpaRepository<Option, Long> {
 }

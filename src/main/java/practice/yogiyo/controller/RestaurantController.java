@@ -9,7 +9,9 @@ import practice.yogiyo.dto.MenuCategoryDto;
 import practice.yogiyo.dto.OptionCategoryDto;
 import practice.yogiyo.dto.RestaurantDto;
 import practice.yogiyo.dto.RestaurantPreviewDto;
+import practice.yogiyo.entity.Menu.Menu;
 import practice.yogiyo.service.CategoryService;
+import practice.yogiyo.service.MenuService;
 import practice.yogiyo.service.RestaurantService;
 
 import java.util.List;
@@ -18,6 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RestaurantController {
     private final RestaurantService restaurantService;
+    private final MenuService menuService;
     private final CategoryService categoryService;
 
     /**
@@ -46,7 +49,9 @@ public class RestaurantController {
     @GetMapping("/menu/{menuId}")
     public String getMenuInfo(@PathVariable("menuId") Long menuId, Model model) {
         List<OptionCategoryDto> optionCategoryDtoList = restaurantService.getOptions(menuId);
+        Menu menu = menuService.findMenuById(menuId);
         model.addAttribute("optionCategoryDtoList", optionCategoryDtoList);
-        return "/menus/optionList"        ;
+        model.addAttribute("menu", menu);
+        return "/menus/optionList";
     }
 }
