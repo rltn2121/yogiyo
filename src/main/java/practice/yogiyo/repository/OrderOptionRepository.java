@@ -1,8 +1,8 @@
 package practice.yogiyo.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import practice.yogiyo.entity.Member.Member;
 import practice.yogiyo.entity.Order.Order;
+import practice.yogiyo.entity.Order.OrderOption;
 
-public interface OrderRepository extends JpaRepository<Order, Long> {
+public interface OrderOptionRepository extends JpaRepository<OrderOption, Long> {
 }

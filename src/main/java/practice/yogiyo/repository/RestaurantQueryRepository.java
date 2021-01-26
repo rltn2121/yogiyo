@@ -84,6 +84,21 @@ public class RestaurantQueryRepository {
                 ).fetch();
     }
 
+    public Restaurant findRestaurantByMenuId(Long menuId) {
+        return queryFactory
+                .select(QRestaurant.restaurant)
+                .from(menuCategory)
+                .join(menuCategory.restaurant, QRestaurant.restaurant)
+                .where(menuCategory.eq(
+                        JPAExpressions
+                                .select(menuCategory)
+                                .from(menu)
+                                .join(menu.menuCategory, menuCategory)
+                                .where(menu.id.eq(menuId))
+                ))
+                .fetchOne();
+
+    }
 
     /**
      * PRIVATE

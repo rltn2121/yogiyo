@@ -8,11 +8,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import practice.yogiyo.dto.MenuCategoryDto;
 import practice.yogiyo.dto.OptionCategoryDto;
-import practice.yogiyo.dto.QMenuDto;
 import practice.yogiyo.dto.RestaurantDto;
 import practice.yogiyo.entity.Menu.*;
 import practice.yogiyo.entity.Restaurant.Category;
 import practice.yogiyo.entity.Restaurant.QRestaurant;
+import practice.yogiyo.entity.Restaurant.Restaurant;
 import practice.yogiyo.entity.Restaurant.RestaurantType;
 import practice.yogiyo.repository.CategoryRepository;
 import practice.yogiyo.repository.RestaurantQueryRepository;
@@ -95,4 +95,15 @@ class RestaurantServiceTest {
             }
         }
     } 
+    
+    @Test
+    public void 식당찾기() throws Exception{
+        // given
+        Restaurant restaurant = restaurantQueryRepository.findRestaurantByMenuId(10L);
+        System.out.println("restaurant.getName() = " + restaurant.getName());
+        // when
+        
+        // then
+        
+    }
 }

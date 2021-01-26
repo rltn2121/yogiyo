@@ -1,6 +1,7 @@
 package practice.yogiyo.entity.Order;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import practice.yogiyo.entity.EmbeddedType.Address;
@@ -20,6 +21,17 @@ public class Order extends BaseTimeEntity {
     private Long id;
 
     private String orderNumber;
+
+    public Order(Restaurant restaurant, String paymentType, String request, String orderType, Integer deliveryPrice, Integer deliveryDiscount, Address address) {
+        this.restaurant = restaurant;
+        this.paymentType = paymentType;
+        this.request = request;
+        this.orderType = orderType;
+        this.deliveryPrice = deliveryPrice;
+        this.deliveryDiscount = deliveryDiscount;
+        this.address = address;
+    }
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
@@ -32,7 +44,7 @@ public class Order extends BaseTimeEntity {
     private String request;
     private String orderType;
     private Integer deliveryPrice;
-    private String deliveryDiscount;
+    private Integer deliveryDiscount;
     @Embedded
     private Address address;
 

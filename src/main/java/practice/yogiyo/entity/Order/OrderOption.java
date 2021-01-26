@@ -4,31 +4,32 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import practice.yogiyo.entity.Menu.Menu;
+import practice.yogiyo.entity.Menu.Option;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class OrderMenu {
+public class OrderOption {
     @Id
     @GeneratedValue
-    @Column(name = "order_menu_id")
+    @Column(name = "order_option_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id")
-    private Order order;
+    @JoinColumn(name = "order_menu_id")
+    private OrderMenu orderMenu;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "menu_id")
-    private Menu menu;
+    @JoinColumn(name = "option_id")
+    private Option option;
 
     private Integer quantity;
 
-    public OrderMenu(Order order, Menu menu, Integer quantity) {
-        this.order = order;
-        this.menu = menu;
+    public OrderOption(OrderMenu orderMenu, Option option, Integer quantity) {
+        this.orderMenu = orderMenu;
+        this.option = option;
         this.quantity = quantity;
     }
 }
