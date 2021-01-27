@@ -22,7 +22,7 @@ public class Order extends BaseTimeEntity {
 
     private String orderNumber;
 
-    public Order(Restaurant restaurant, String paymentType, String request, String orderType, Integer deliveryPrice, Integer deliveryDiscount, Address address) {
+    public Order(Restaurant restaurant, String paymentType, String request, String orderType, Integer deliveryPrice, Integer deliveryDiscount, Address address, OrderStatus orderStatus) {
         this.restaurant = restaurant;
         this.paymentType = paymentType;
         this.request = request;
@@ -30,6 +30,7 @@ public class Order extends BaseTimeEntity {
         this.deliveryPrice = deliveryPrice;
         this.deliveryDiscount = deliveryDiscount;
         this.address = address;
+        this.orderStatus = orderStatus;
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -45,6 +46,9 @@ public class Order extends BaseTimeEntity {
     private String orderType;
     private Integer deliveryPrice;
     private Integer deliveryDiscount;
+
+    @Enumerated(EnumType.STRING)
+    private OrderStatus orderStatus;
     @Embedded
     private Address address;
 

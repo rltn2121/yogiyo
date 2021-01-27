@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import practice.yogiyo.entity.Menu.Menu;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -23,6 +25,9 @@ public class OrderMenu {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "menu_id")
     private Menu menu;
+
+    @OneToMany(mappedBy = "orderMenu")
+    private List<OrderOption> orderOption = new ArrayList<>();
 
     private Integer quantity;
 

@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header">
+    <title>Hello</title>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<div th:replace="fragments/bodyHeader :: bodyHeader"/>
+<h1>저기요</h1>
+<div id="box">
+    <h1>주문 내역</h1>
+    <table align=center class="table table-striped">
+        <tr>
+            <td>#</td>
+            <td>메뉴</td>
+            <td>가격</td>
+            <td>수량</td>
+        </tr>
+        <tr th:each="orderDetailDto : ${orderDetailDtos}">
+            <td th:text="${orderDetailDto.orderMenuId}"></td>
+            <td th:text="${orderDetailDto.menuName}"></td>
+            <td th:text="${orderDetailDto.menuPrice}"></td>
+            <td th:text="${orderDetailDto.quantity}"></td>
+            <td>
+                <table>
+                    <tr>
+                        <td>옵션</td>
+                        <td>수량</td>
+                    </tr>
+                    <tr th:each="options : ${orderDetailDto.orderOptionDtoList}">
+                        <td th:text="${options.optionName}"></td>
+                        <td th:text="${options.optionPrice}"></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</div>
+<div th:replace="fragments/footer :: footer"/>
+</body>
+</html>

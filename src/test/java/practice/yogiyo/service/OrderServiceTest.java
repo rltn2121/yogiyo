@@ -1,14 +1,14 @@
 package practice.yogiyo.service;
 
 import com.querydsl.core.Tuple;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-import practice.yogiyo.entity.Menu.Menu;
-import practice.yogiyo.entity.Menu.Option;
+import practice.yogiyo.dto.OrderMenuDto;
+import practice.yogiyo.dto.OrderPreviewDto;
+import practice.yogiyo.dto.QOrderMenuDto;
 import practice.yogiyo.entity.Order.*;
 
 import java.util.List;
@@ -22,9 +22,11 @@ import static practice.yogiyo.entity.Order.QOrderOption.*;
 public class OrderServiceTest {
     @Autowired
     JPAQueryFactory queryFactory;
+    @Autowired
+    OrderService orderService;
 
     @Test
-    public void 주문내역조인() throws Exception{
+    public void 주문내역조인() throws Exception {
         // given
         List<Tuple> fetch = queryFactory
                 .select(order, orderMenu)
@@ -33,58 +35,82 @@ public class OrderServiceTest {
                 .where(order.id.eq(100L))
                 .fetch();
         for (Tuple tuple : fetch) {
-            System.out.println("order id = " + tuple.get(0,Order.class).getId());
+            System.out.println("order id = " + tuple.get(0, Order.class).getId());
             System.out.println("menu name = " + tuple.get(1, OrderMenu.class).getMenu().getName());
             System.out.println("quantity = " + tuple.get(1, OrderMenu.class).getQuantity());
         }
     }
 
     @Test
-    public void 주문메뉴_주문옵션조회() throws Exception{
-        // given
+    public void 주문메뉴_주문옵션조회() throws Exception {
         Long orderId = 100L;
-        List<Tuple> fetch = queryFactory
-                .select(orderMenu, orderOption)
-                .from(orderMenu)
-                .leftJoin(orderOption.orderMenu, orderMenu)
-                .where(order.id.eq(orderId))
-                .fetch();
-        // when
-        for (Tuple tuple : fetch) {
-
-        }
-        // then
-
-    }
-
-    @Test
-    public void asdf() throws Exception{
-        // given
-        Long orderId = 100L;
-        List<Tuple> fetch = queryFactory
-                .select(orderOption, orderMenu)
-                .from(orderOption)
-                .rightJoin(orderOption.orderMenu, orderMenu).fetchJoin()
+        List<OrderMenu> fetch = queryFactory
+                .selectFrom(orderMenu)
+                .distinct()
+                .leftJoin(orderMenu.orderOption, orderOption).fetchJoin()
                 .where(orderMenu.order.id.eq(orderId))
                 .fetch();
 
-        // when
-        for (Tuple tuple : fetch) {
-            System.out.println("tuple = " + tuple);
+        for (OrderMenu orderMenu : fetch) {
+            System.out.println("====== 메뉴 정보 ======");
+            System.out.println("id = " + orderMenu.getId());
+            System.out.println("메뉴 = " + orderMenu.getMenu().getName());
+            System.out.println("가격 = " + orderMenu.getMenu().getPrice());
+            System.out.println("수량 = " + orderMenu.getQuantity());
+            List<OrderOption> orderOptionList = orderMenu.getOrderOption();
+            System.out.println("====== 옵션 정보 ======");
+            for (OrderOption orderOption : orderOptionList) {
+                System.out.println("  옵션 = " + orderOption.getOption().getName());
+                System.out.println("  가격 = " + orderOption.getOption().getPrice());
+                System.out.println("  수량 = " + orderOption.getQuantity());
+            }
         }
-
-//        for (Tuple tuple : fetch) {
-//            OrderOption orderOption = tuple.get(0, OrderOption.class);
-//            OrderMenu orderMenu = tuple.get(1, OrderMenu.class);
-//
-//            System.out.println("orderMenu.getMenu().getName() = " + orderMenu.getMenu().getName());
-//            System.out.println("orderMenu.getQuantity() = " + orderMenu.getQuantity());
-//            if (orderOption != null) {
-//                System.out.println("orderOption.getOption().getName() = " + orderOption.getOption().getName());
-//                System.out.println("orderOption.getQuantity() = " + orderOption.getQuantity());
-//            }
-//        }
-        // then
-
     }
+
+    public List<OrderMenu> getMenuOption(Long orderId) {
+        return queryFactory
+                .selectFrom(orderMenu)
+                .distinct()
+                .leftJoin(orderMenu.orderOption, orderOption).fetchJoin()
+                .where(orderMenu.order.id.eq(orderId))
+                .fetch();
+    }
+
+//    @Test
+//    public void 주문미리보기() throws Exception{
+//        // given
+//        List<OrderMenuDto> fetch = getOrderMenuDtos();
+//        // when
+//
+//        for (OrderMenuDto orderPreviewDto : fetch) {
+//            System.out.println("주문시간 = " + orderPreviewDto.getOrderDateTime());
+//            System.out.println("주문상태 = " + orderPreviewDto.getOrderStatus());
+//            System.out.println("식당 = " + orderPreviewDto.getRestaurantName());
+//            System.out.println("메뉴 = " + orderPreviewDto.getMenuName());
+//            System.out.println("수량 = " + orderPreviewDto.getQuantity());
+//        }
+//        // then
+//
+//    }
+
+@Test
+public void 서비스테스트() throws Exception{
+    // given
+    List<OrderPreviewDto> orderPreviewDtos = orderService.getOrderPreviewDtos();
+    for (OrderPreviewDto orderPreviewDto : orderPreviewDtos) {
+        System.out.println("주문시간 = " + orderPreviewDto.getOrderDateTime());
+        System.out.println("식당 = " + orderPreviewDto.getRestaurantName());
+        System.out.println("주문상태 = " + orderPreviewDto.getOrderStatus());
+        List<OrderPreviewDto.MenuInfo> menuInfoList = orderPreviewDto.getMenuInfoList();
+        for (OrderPreviewDto.MenuInfo menuInfo : menuInfoList) {
+            System.out.println("  - 메뉴: " + menuInfo.getMenuName());
+            System.out.println("  - 수량: " + menuInfo.getQuantity());
+        }
+    }
+    // when
+
+    // then
+
 }
+}
+
