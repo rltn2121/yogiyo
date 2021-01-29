@@ -1,0 +1,53 @@
+jpa는 기본 생성자 필요 (protected)
+@NotEmpty import 안됨: https://www.inflearn.com/questions/52352
+
+타임리프 동적: https://zamezzz.tistory.com/308
+
+ <a th:href="@{/restaurants(category=${categoryDtos.category})}"
+
+
+option 테이블
+
+review_reply에 review_id
+orders에 payment_Type
+order_menu에 quantity
+
+review 엔티티에 avgScore, restaurant 추가
+
+@RequestParam vs @PathVariable https://elfinlas.github.io/2018/02/18/spring-parameter/
+
+checkbox 안보이게
+https://xe1.xpressengine.com/qna/20943507
+
+
+OrderMenu
+private List<OrderOption> orderOptionList 추가 (양방향 연관관계)
+  -> OrderMenu, OrderOption 조인에서 특정 메뉴의 option 선택하지 않으면 OrderOption이 null이라서 NullPointerException 발생.
+
+    @Test
+    public void 주문메뉴_주문옵션조회() throws Exception {
+        Long orderId = 100L;
+        List<OrderOption> fetch = queryFactory
+                .select(orderOption)
+                .from(orderOption)
+                .rightJoin(orderOption.orderMenu, orderMenu).fetchJoin()
+                .where(orderMenu.order.id.eq(orderId))
+                .fetch();
+    }
+
+     select
+        orderoptio0_.order_option_id as order_op1_8_0_,
+        ordermenu1_.order_menu_id as order_me1_7_1_,
+        orderoptio0_.option_id as option_i3_8_0_,
+        orderoptio0_.order_menu_id as order_me4_8_0_,
+        orderoptio0_.quantity as quantity2_8_0_,
+        ordermenu1_.menu_id as menu_id3_7_1_,
+        ordermenu1_.order_id as order_id4_7_1_,
+        ordermenu1_.quantity as quantity2_7_1_
+    from
+        order_option orderoptio0_
+    right outer join
+        order_menu ordermenu1_
+            on orderoptio0_.order_menu_id=ordermenu1_.order_menu_id
+    where
+        ordermenu1_.order_id=?
