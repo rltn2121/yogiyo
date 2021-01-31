@@ -10,6 +10,8 @@ import practice.yogiyo.entity.Order.OrderMenu;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+import static practice.yogiyo.entity.Menu.QMenu.menu;
+import static practice.yogiyo.entity.Menu.QOption.option;
 import static practice.yogiyo.entity.Order.QOrderMenu.orderMenu;
 import static practice.yogiyo.entity.Order.QOrderOption.orderOption;
 
@@ -38,6 +40,8 @@ public class OrderQueryRepository {
                 .selectFrom(orderMenu)
                 .distinct()
                 .leftJoin(orderMenu.orderOption, orderOption).fetchJoin()
+                .leftJoin(orderMenu.menu, menu).fetchJoin()
+                .leftJoin(orderOption.option, option).fetchJoin()
                 .where(orderMenu.order.id.eq(orderId))
                 .fetch();
     }

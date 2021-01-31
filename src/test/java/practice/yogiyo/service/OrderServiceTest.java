@@ -9,10 +9,13 @@ import org.springframework.transaction.annotation.Transactional;
 import practice.yogiyo.dto.OrderMenuDto;
 import practice.yogiyo.dto.OrderPreviewDto;
 import practice.yogiyo.dto.QOrderMenuDto;
+import practice.yogiyo.entity.Menu.QOption;
 import practice.yogiyo.entity.Order.*;
 
 import java.util.List;
 
+import static practice.yogiyo.entity.Menu.QMenu.menu;
+import static practice.yogiyo.entity.Menu.QOption.option;
 import static practice.yogiyo.entity.Order.QOrder.*;
 import static practice.yogiyo.entity.Order.QOrderMenu.*;
 import static practice.yogiyo.entity.Order.QOrderOption.*;
@@ -48,6 +51,8 @@ public class OrderServiceTest {
                 .selectFrom(orderMenu)
                 .distinct()
                 .leftJoin(orderMenu.orderOption, orderOption).fetchJoin()
+                .join(orderMenu.menu, menu).fetchJoin()
+                .join(orderOption.option, option).fetchJoin()
                 .where(orderMenu.order.id.eq(orderId))
                 .fetch();
 

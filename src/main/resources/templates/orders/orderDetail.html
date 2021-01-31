@@ -10,12 +10,14 @@
 <h1>저기요</h1>
 <div id="box">
     <h1>주문 내역</h1>
-    <table align=center class="table table-striped">
+    <table align=center class="table table-striped" border = 1px solid #333333>
         <tr>
             <td>#</td>
             <td>메뉴</td>
             <td>가격</td>
             <td>수량</td>
+            <td>옵션정보</td>
+            <td>가격합계</td>
         </tr>
         <tr th:each="orderDetailDto : ${orderDetailDtos}">
             <td th:text="${orderDetailDto.orderMenuId}"></td>
@@ -23,17 +25,23 @@
             <td th:text="${orderDetailDto.menuPrice}"></td>
             <td th:text="${orderDetailDto.quantity}"></td>
             <td>
-                <table>
+                <table border = 1px solid #333333>
                     <tr>
                         <td>옵션</td>
+                        <td>가격</td>
                         <td>수량</td>
                     </tr>
                     <tr th:each="options : ${orderDetailDto.orderOptionDtoList}">
                         <td th:text="${options.optionName}"></td>
                         <td th:text="${options.optionPrice}"></td>
+                        <td th:text="${options.optionQuantity}"></td>
                     </tr>
                 </table>
             </td>
+            <td th:text="${orderDetailDto.totalMenuOptionPrice}"></td>
+        </tr>
+        <tr>
+            <td colspan="3" th:text="'총 가격 '+${totalPrice}"></td>
         </tr>
     </table>
 </div>

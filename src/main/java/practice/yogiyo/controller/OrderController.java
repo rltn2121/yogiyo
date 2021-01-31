@@ -50,7 +50,11 @@ public class OrderController {
     @GetMapping("/orders/{orderId}")
     public String getOrderDetail(@PathVariable("orderId") Long orderId, Model model){
         List<OrderDetailDto> orderDetailDtos = orderService.getOrderDetail(orderId);
+        Integer totalPrice = orderService.getTotalPrice(orderDetailDtos);
+
+
         model.addAttribute("orderDetailDtos", orderDetailDtos);
+        model.addAttribute("totalPrice", totalPrice);
         return "/orders/orderDetail";
     }
 }

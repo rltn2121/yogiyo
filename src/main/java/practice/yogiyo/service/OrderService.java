@@ -117,10 +117,21 @@ public class OrderService {
             }
             List<OrderOption> orderOption = orderMenu.getOrderOption();
             for (OrderOption option : orderOption) {
-                orderDetailDtos.get(idx).addOrderOptionDtoList(option.getOption().getName(), option.getQuantity());
+                orderDetailDtos.get(idx).addOrderOptionDtoList(
+                        option.getOption().getName(),
+                        option.getOption().getPrice(),
+                        option.getQuantity());
             }
 
         }
         return orderDetailDtos;
+    }
+
+    public Integer getTotalPrice(List<OrderDetailDto> orderDetailDtos) {
+        int ret = 0;
+        for (OrderDetailDto orderDetailDto : orderDetailDtos) {
+            ret += orderDetailDto.getTotalMenuOptionPrice();
+        }
+        return ret;
     }
 }

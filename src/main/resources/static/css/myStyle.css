@@ -12,7 +12,13 @@ table {
 	margin-top: 70px;
 	padding: 50px 100px;
 	font-size: 110%;
+	border: 1px solid #333333;
 }
+td {
+	padding: 10px;
+	border: 1px solid #333333;
+}
+
 #box
 {
 background-color:lightblue;

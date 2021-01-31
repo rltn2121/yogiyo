@@ -8,4 +8,5 @@ import lombok.Getter;
 public class OrderOptionDto {
     private String optionName;
     private Integer optionPrice;
+    private Integer optionQuantity;
 }
